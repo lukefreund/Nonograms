@@ -1,36 +1,44 @@
-open Nonogram
-open Utils
-open Brute_force
- 
- (* Example usage *)
- let () =
+(* example.ml *)
 
+(* Open the modules where the types and functions are defined *)
+open Nonogram  (* Assuming types are defined in nonogram.ml *)
+open Utils     (* Assuming utils.ml contains the print_nonogram function *)
 
- (* Define the Nonogram puzzle *)
- let example_puzzle = {
+(* Define a sample Nonogram puzzle *)
+
+(* Sample constraints for rows and columns *)
+let sample_puzzle = {
   row_constraints = [
-    [3];
-    [2; 1];
-    [3; 2];
-    [2; 2];
-    [6];
-    [1; 5];
-    [6];
     [1];
-    [2]
-  ];
-  col_constraints = [
-    [1; 2];
-    [3; 1];
-    [1; 5];
-    [7; 1];
-    [5];
     [3];
     [4];
-    [3]
-  ]
-} in
+    [3];
+    [2];
+  ];
+  col_constraints = [
+    [1];
+    [1; 1];
+    [3];
+    [3];
+    [4];
+  ];
+}
 
-(* Solve the puzzle *)
-let solved_nonogram = solve_nonogram_brute_force example_puzzle in 
-print_nonogram solved_nonogram
+(* Sample grid matching the constraints *)
+let sample_grid = [
+  [Empty; Empty; Empty; Empty; Filled];
+  [Empty; Empty; Filled; Filled; Filled];
+  [Empty; Filled; Filled; Filled; Filled];
+  [Empty; Empty; Filled; Filled; Filled];
+  [Filled; Filled; Empty; Empty; Empty];
+]
+
+(* Combine the puzzle and grid into a nonogram *)
+let sample_nonogram = {
+  puzzle = sample_puzzle;
+  grid = sample_grid;
+}
+
+(* Now, use the print_nonogram function to display it *)
+let () =
+  print_nonogram sample_nonogram

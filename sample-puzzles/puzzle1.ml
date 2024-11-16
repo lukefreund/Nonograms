@@ -1,12 +1,3 @@
-(* example.ml *)
-
-(* Open the modules where the types and functions are defined *)
-open Nonogram  (* Assuming types are defined in nonogram.ml *)
-open Utils     (* Assuming utils.ml contains the print_nonogram function *)
-
-(* Define a sample Nonogram puzzle *)
-
-(* Sample constraints for rows and columns *)
 let sample_puzzle = {
   row_constraints = [
     [1];
@@ -38,7 +29,3 @@ let sample_nonogram = {
   puzzle = sample_puzzle;
   grid = sample_grid;
 }
-
-(* Now, use the print_nonogram function to display it *)
-let () =
-  print_nonogram sample_nonogram

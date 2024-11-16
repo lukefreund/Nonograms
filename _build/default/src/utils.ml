@@ -1,66 +1,82 @@
+(* utils.ml *)
+
 open Nonogram
 
-(* Function to print the nonogram *)
-let print_nonogram nonogram =
-  match nonogram with
-  | None -> print_endline "No solution found."
-  | Some nonogram ->
+(* Helper function to compute the maximum length of lists in a list of lists *)
+let max_list_length lists =
+  List.fold_left (fun acc lst -> max acc (List.length lst)) 0 lists
 
-    let { puzzle = { row_constraints; col_constraints }; grid } = nonogram in
+(* Pads a list with Nones on the left to reach the desired length *)
+let pad_left length lst =
+  let padding = length - List.length lst in
+  let rec make_padding n acc =
+    if n <= 0 then acc else make_padding (n - 1) (None :: acc)
+  in
+  make_padding padding [] @ (List.map (fun x -> Some x) lst)
 
-    (* Determine the maximum number of constraints in columns and rows *)
-    let max_row_constraints = List.fold_left (fun acc rc -> max acc (List.length rc)) 0 row_constraints in
-    let max_col_constraints = List.fold_left (fun acc cc -> max acc (List.length cc)) 0 col_constraints in
+(* Corrected transpose function *)
+let transpose lists =
+  let rec transpose_aux lists =
+    if List.for_all (fun lst -> lst = []) lists then []
+    else
+      let heads = List.map (function [] -> None | h :: _ -> h) lists in
+      let tails = List.map (function [] -> [] | _ :: t -> t) lists in
+      heads :: transpose_aux tails
+  in
+  transpose_aux lists
 
-    (* Prepare the column constraints for printing *)
-    let col_constraints_transposed =
-      let padded_col_constraints = List.map (fun cc ->
-        let padding = max_col_constraints - List.length cc in
-        List.init padding (fun _ -> "") @ List.map string_of_int cc
-      ) col_constraints in
-      (* Transpose the column constraints *)
-      let rec transpose lists =
-        if List.exists (fun l -> l <> []) lists then
-          let heads = List.map (function | [] -> "" | h :: _ -> h) lists in
-          let tails = List.map (function | [] -> [] | _ :: t -> t) lists in
-          heads :: transpose tails
-        else
-          []
-      in
-      transpose padded_col_constraints
-    in
+(* The main function to print the nonogram *)
+let print_nonogram (nonogram : nonogram) : unit =
+  let grid = nonogram.grid in
+  let row_constraints = nonogram.puzzle.row_constraints in
+  let col_constraints = nonogram.puzzle.col_constraints in
 
-    (* Print the column constraints *)
-    List.iter (fun row ->
-      (* Add padding for row constraints *)
-      let padding = String.make (max_row_constraints * 2 + 1) ' ' in
-      print_string padding;
+  (* Compute max lengths *)
+  let max_row_constraints_length = max_list_length row_constraints in
+  let max_col_constraints_length = max_list_length col_constraints in
+
+  (* Pad the constraints *)
+  let padded_col_constraints =
+    List.map (pad_left max_col_constraints_length) col_constraints
+  in
+  let padded_row_constraints =
+    List.map (pad_left max_row_constraints_length) row_constraints
+  in
+
+  (* Transpose the column constraints *)
+  let transposed_col_constraints = transpose padded_col_constraints in
+
+  (* Print the column constraints *)
+  List.iter
+    (fun line ->
+      (* Print spaces for row constraints *)
+      for _ = 1 to max_row_constraints_length do
+        print_string "  "
+      done;
       (* Print the column constraints *)
-      List.iter (fun c ->
-        print_string (if c = "" then "  " else Printf.sprintf "%2s" c)
-      ) row;
-      print_newline ()
-    ) col_constraints_transposed;
+      List.iter
+        (function
+        | None -> print_string "  "
+        | Some n -> Printf.printf "%2d" n)
+        line;
+      print_newline ())
+    transposed_col_constraints;
 
-    (* Print the grid with row constraints *)
-    List.iter2 (fun row_cells row_constraint ->
-      (* Print row constraints *)
-      let padded_row_constraint = 
-        let padding = max_row_constraints - List.length row_constraint in
-        List.init padding (fun _ -> "  ") @ List.map (fun n -> Printf.sprintf "%2d" n) row_constraint
-      in
-      List.iter print_string padded_row_constraint;
-      (* Separator between constraints and grid *)
-      print_string " |";
+  (* Now, print each row *)
+  List.iter2
+    (fun row_constraint row ->
+      (* Print the row constraints *)
+      List.iter
+        (function
+        | None -> print_string "  "
+        | Some n -> Printf.printf "%2d" n)
+        row_constraint;
       (* Print the cells *)
-      List.iter (fun cell ->
-        let cell_str = match cell with
-          | Filled -> "██"
-          | Empty -> "  "
-        in
-        print_string cell_str
-      ) row_cells;
-      print_newline ()
-    ) grid row_constraints
-
-  
+      List.iter
+        (fun cell ->
+          match cell with
+          | Filled -> print_string "██"
+          | Empty -> print_string "  ")
+        row;
+      print_newline ())
+    padded_row_constraints grid
