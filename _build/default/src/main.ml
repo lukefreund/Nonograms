@@ -1,44 +1,15 @@
-(* example.ml *)
+open Grid
+open Solver
+open Constraints
 
-(* Open the modules where the types and functions are defined *)
-open Nonogram  (* Assuming types are defined in nonogram.ml *)
-open Utils     (* Assuming utils.ml contains the print_nonogram function *)
-
-(* Define a sample Nonogram puzzle *)
-
-(* Sample constraints for rows and columns *)
-let sample_puzzle = {
-  row_constraints = [
-    [1];
-    [3];
-    [4];
-    [3];
-    [2];
-  ];
-  col_constraints = [
-    [1];
-    [1; 1];
-    [3];
-    [3];
-    [4];
-  ];
-}
-
-(* Sample grid matching the constraints *)
-let sample_grid = [
-  [Empty; Empty; Empty; Empty; Filled];
-  [Empty; Empty; Filled; Filled; Filled];
-  [Empty; Filled; Filled; Filled; Filled];
-  [Empty; Empty; Filled; Filled; Filled];
-  [Filled; Filled; Empty; Empty; Empty];
-]
-
-(* Combine the puzzle and grid into a nonogram *)
-let sample_nonogram = {
-  puzzle = sample_puzzle;
-  grid = sample_grid;
-}
-
-(* Now, use the print_nonogram function to display it *)
 let () =
-  print_nonogram sample_nonogram
+  let rows = ["1"; "1"; "1"] in
+  let cols = ["1"; "1"; "1"] in
+  let row_constraints, col_constraints = parse_constraints rows cols in
+  let grid = create_empty_grid 3 3 in
+  match solve_nonogram grid (row_constraints, col_constraints) with
+  | Some solution ->
+      print_endline "Solution found:";
+      print_grid solution
+  | None ->
+      print_endline "No solution exists."

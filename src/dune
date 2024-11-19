@@ -1,3 +1,2 @@
 (executable
- (name main)
- (modules nonogram utils brute_force main))
+ (name main))
