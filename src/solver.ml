@@ -17,7 +17,7 @@ type solving_state = {
 }
 
 (* Custom function to replace List.init *)
-let rec list_init n f =
+let list_init n f =
   let rec aux i acc =
     if i < 0 then acc
     else aux (i - 1) (f i :: acc)
@@ -33,9 +33,10 @@ let generate_line_possibilities constraints line_length =
       else []
     | n :: rest ->
       let min_spaces = if rest = [] then 0 else 1 in
-      let sum_rest_constraints = match rest with
-        | [] -> 0
-        | _ -> List.fold_left ( + ) 0 rest + List.length rest - 1
+      let len_rest = List.length rest in
+      let sum_rest_constraints =
+        let spaces_between_rest = if len_rest > 0 then len_rest - 1 else 0 in
+        List.fold_left ( + ) 0 rest + spaces_between_rest
       in
       let max_prefix_spaces = remaining_length - (n + min_spaces + sum_rest_constraints) in
       if max_prefix_spaces < 0 then []
@@ -44,7 +45,7 @@ let generate_line_possibilities constraints line_length =
         List.concat (List.map (fun spaces ->
           let prefix = list_init spaces (fun _ -> Empty) in
           let block = list_init n (fun _ -> Filled) in
-          let suffix_length = remaining_length - spaces - n - min_spaces + if rest = [] then 1 else 0 in
+          let suffix_length = remaining_length - spaces - n - min_spaces in
           let suffix_possibilities = aux rest suffix_length in
           List.map (fun suffix ->
             prefix @ block @ (if rest = [] then [] else [Empty]) @ suffix
