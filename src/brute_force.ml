@@ -79,20 +79,41 @@ let solve_nonogram (puzzle : puzzle) : grid =
   let col_constraints = puzzle.col_constraints in
   let width = List.length col_constraints in
 
+  let start_row_time = Unix.gettimeofday () in
+
   (* Generate all possible rows *)
   let all_row_possibilities = 
     List.map (fun constraints ->
       generate_row_possibilities constraints width
     ) row_constraints
   in
+  let end_row_time = Unix.gettimeofday () in
+  let row_generation_time = end_row_time -. start_row_time in
+  Printf.printf "Time to generate all row possibilities: %.6f seconds\n" row_generation_time;
 
+  let start_grid_time = Unix.gettimeofday () in
   (* Generate all possible grids *)
   let possible_grids = all_combinations all_row_possibilities in
+  let end_grid_time = Unix.gettimeofday () in
+  let grid_generation_time = end_grid_time -. start_grid_time in
+  Printf.printf "Time to generate all possible grids: %.6f seconds\n" grid_generation_time;
 
+  let start_check_time = Unix.gettimeofday () in
   (* Find the first grid that satisfies the column constraints *)
-  try
-    List.find (fun grid ->
-      check_columns grid col_constraints
-    ) possible_grids
-  with Not_found ->
-    failwith "No solution exists for the given puzzle."
+  let solution =
+    try
+      List.find (fun grid ->
+        check_columns grid col_constraints
+      ) possible_grids
+    with Not_found ->
+      failwith "No solution exists for the given puzzle."
+  in
+  let end_check_time = Unix.gettimeofday () in
+  let column_check_time = end_check_time -. start_check_time in
+  Printf.printf "Time to check grids against column constraints: %.6f seconds\n" column_check_time;
+
+  (* Total time *)
+  let total_time = row_generation_time +. grid_generation_time +. column_check_time in
+  Printf.printf "Total time in solve_nonogram: %.6f seconds\n" total_time;
+
+  solution

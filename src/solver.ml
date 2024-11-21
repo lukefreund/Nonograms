@@ -205,8 +205,12 @@ and branch_on_line state line_type index =
   try_possibilities possibilities
 
 let solve_nonogram_eff (puzzle : puzzle) : grid =
+  let total_start_time = Unix.gettimeofday () in
+
   let height = List.length puzzle.row_constraints in
   let width = List.length puzzle.col_constraints in
+  
+  let init_start_time = Unix.gettimeofday () in
   let initial_state = {
     grid = Array.make_matrix height width Unknown;
     row_poss = Array.init height (fun i ->
@@ -216,6 +220,23 @@ let solve_nonogram_eff (puzzle : puzzle) : grid =
       generate_line_possibilities (List.nth puzzle.col_constraints i) height
     );
   } in
-  match solve initial_state with
-  | Some solution -> Array.to_list (Array.map Array.to_list solution)
-  | None -> failwith "No solution exists for the given puzzle."
+  let init_end_time = Unix.gettimeofday () in
+  let init_time = init_end_time -. init_start_time in
+
+  let solve_start_time = Unix.gettimeofday () in
+  let result = match solve initial_state with
+    | Some solution -> Array.to_list (Array.map Array.to_list solution)
+    | None -> failwith "No solution exists for the given puzzle."
+  in
+  let solve_end_time = Unix.gettimeofday () in
+  let solve_time = solve_end_time -. solve_start_time in
+
+  let total_end_time = Unix.gettimeofday () in
+  let total_time = total_end_time -. total_start_time in
+
+  (* Print the measured times *)
+  Printf.printf "Total time: %.6f seconds\n" total_time;
+  Printf.printf "Initialization time: %.6f seconds\n" init_time;
+  Printf.printf "Solving time: %.6f seconds\n" solve_time;
+
+  result

@@ -2,7 +2,6 @@
 
 open Nonogram
 open Utils
-open Solver
 
 let () =
   Random.self_init ();  (* Initialize the random number generator *)
@@ -52,7 +51,7 @@ let () =
 
   (* Solve the puzzle *)
   print_endline "\nSolving the puzzle...";
-  let solution_grid = solve_nonogram_eff random_nonogram.puzzle in
+  let solution_grid = Solver.solve_nonogram_eff random_nonogram.puzzle in
 
   (* Create the solved nonogram structure *)
   let solved_nonogram = {
