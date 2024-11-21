@@ -38,3 +38,6 @@ Execute the main program to generate and solve a random Nonogram puzzle:
 
 `dune exec ./src/main.exe`
 
+## Try implementing the algorithms with the template code!
+We have provided two files in the template_code folder, so that you can attempt to implement the Nonogram solving algorithms yourself. These come with function signatures and hints. You can compare your solution to our solution, which is in the src folder.
+
