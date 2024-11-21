@@ -49,3 +49,13 @@ Execute the main program to generate and solve a random Nonogram puzzle:
 ## Try implementing the algorithms with the template code!
 We have provided two files in the template_code folder, so that you can attempt to implement the Nonogram solving algorithms yourself. These come with function signatures and hints. You can compare your solution to our solution, which is in the src folder.
 
+## Documentation used to help implement the code:
+
+https://ocaml.org/manual/5.2/api/Array.html 
+
+https://ocaml.org/docs/arrays#:~:text=In%20OCaml%2C%20arrays%20are%20collections,to%20elements%20at%20any%20position 
+
+https://ocaml.org/docs/libraries-dune
+
+ttps://ocaml.org/exercises?difficulty_level=advanced
+
