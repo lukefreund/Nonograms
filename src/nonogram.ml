@@ -1,5 +1,3 @@
-(* nonogram.ml *)
-
 (* Type representing a cell in the Nonogram grid *)
 type cell = 
   | Filled    (* The cell is filled *)

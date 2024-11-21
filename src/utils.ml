@@ -1,5 +1,3 @@
-(* utils.ml *)
-
 open Nonogram
 
 (* Helper function to compute the maximum length of lists in a list of lists *)

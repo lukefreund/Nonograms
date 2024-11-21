@@ -1,5 +1,5 @@
 (executable
  (name main)
- (modules nonogram utils brute_force solver solver2 main)
+ (modules nonogram utils brute_force efficient_solver main)
  (libraries unix)
  (flags (:standard -g)))

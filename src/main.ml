@@ -1,13 +1,12 @@
-(* main.ml *)
-
 open Nonogram
 open Utils
 
+(* Main program entry point *)
 let () =
   Random.self_init ();  (* Initialize the random number generator *)
 
   (* Greet the user and explain the game *)
-  print_endline "Welcome to the Nonogram Game!";
+  print_endline "Welcome to the Nonogram Game made by Luke, Liam and Selin!";
   print_endline "You will be presented with a Nonogram puzzle to solve.";
   print_endline "Please enter the size of the Nonogram puzzle you want to play (e.g., 5):";
 
@@ -50,8 +49,10 @@ let () =
   let _ = read_line () in
 
   (* Solve the puzzle *)
+  (* Use Brute_force.solve_nonogram for brute force method *)
+  (* Use Efficient_solver.solve_nonogram_eff for efficient method *)
   print_endline "\nSolving the puzzle...";
-  let solution_grid = Solver.solve_nonogram_eff random_nonogram.puzzle in
+  let solution_grid = Efficient_solver.solve_nonogram_eff random_nonogram.puzzle in
 
   (* Create the solved nonogram structure *)
   let solved_nonogram = {
