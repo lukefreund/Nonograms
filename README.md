@@ -21,7 +21,7 @@ Dune (version 3.16.1)
 
 Clone the Repository
 
-`git clone https://github.com/yourusername/nonogram-solver.git`
+`git clone https://github.com/lukefreund/Nonograms.git`
 
 `cd nonogram-solver`
 
