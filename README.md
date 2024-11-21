@@ -57,5 +57,5 @@ https://ocaml.org/docs/arrays#:~:text=In%20OCaml%2C%20arrays%20are%20collections
 
 https://ocaml.org/docs/libraries-dune
 
-ttps://ocaml.org/exercises?difficulty_level=advanced
+https://ocaml.org/exercises?difficulty_level=advanced
 
