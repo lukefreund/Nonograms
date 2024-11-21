@@ -1,5 +1,10 @@
 # Nonogram Solver Project
 
+## Team
+Luke Freund, 261118003
+Liam Di Chiro, 261118442
+Selin Ida Omur, 261017800
+
 ## Overview
 
 This project is an implementation of a Nonogram puzzle generator and solver in OCaml. Nonograms are logic puzzles where you fill in cells on a grid according to numerical clues provided for each row and column to reveal a hidden image.
