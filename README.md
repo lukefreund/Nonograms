@@ -2,8 +2,11 @@
 
 ## Team
 Luke Freund, 261118003
+
 Liam Di Chiro, 261118442
+
 Selin Ida Omur, 261017800
+
 
 ## Overview
 
